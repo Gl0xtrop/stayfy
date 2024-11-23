@@ -1,0 +1,625 @@
+<html><head><base href="https://websim.ai" />
+<meta charset="UTF-8">
+<title>STAYFY - Tu plataforma de Stray Kids</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root {
+  --primary: #1DB954;
+  --dark: #121212;
+  --light: #282828;
+  --text: #FFFFFF;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Circular', Arial, sans-serif;
+  background-color: var(--dark);
+  color: var(--text);
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  height: 100vh;
+}
+
+.sidebar {
+  background-color: var(--dark);
+  padding: 24px;
+  border-right: 1px solid var(--light);
+}
+
+.logo {
+  color: var(--primary);
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 32px;
+}
+
+.nav-item {
+  color: #b3b3b3;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.nav-item:hover {
+  color: var(--text);
+}
+
+.nav-item svg {
+  margin-right: 16px;
+}
+
+.main-content {
+  padding: 24px;
+  background: linear-gradient(to bottom, #434343, var(--dark));
+}
+
+.playlist {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.song-card {
+  background: var(--light);
+  padding: 16px;
+  border-radius: 8px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.song-card:hover {
+  background: #383838;
+}
+
+.album-art {
+  width: 100%;
+  aspect-ratio: 1;
+  background-size: cover;
+  background-position: center;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.song-card:hover .album-art {
+  transform: scale(1.05);
+}
+
+.song-info h3 {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.song-info p {
+  font-size: 14px;
+  color: #b3b3b3;
+}
+
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--light);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.player-info img {
+  width: 56px;
+  height: 56px;
+  border-radius: 4px;
+}
+
+.control-btn {
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.control-btn:hover {
+  color: var(--primary);
+}
+
+.progress-bar {
+  flex-grow: 1;
+  height: 4px;
+  background: #404040;
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+
+.progress-bar:hover {
+  height: 6px;
+}
+
+.progress-bar:hover .progress {
+  background: var(--primary);
+  height: 6px;
+}
+
+.progress {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+.lyrics-container {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--light);
+  padding: 24px;
+  border-radius: 8px;
+  width: 300px;
+  max-height: 60vh;
+  overflow-y: auto;
+  display: none;
+}
+
+.lyrics-container.show {
+  display: block;
+}
+
+.lyrics-message {
+  text-align: center;
+  color: #b3b3b3;
+  line-height: 1.6;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+    height: auto;
+    padding-bottom: 80px;
+  }
+
+  .sidebar {
+    position: fixed;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 12px;
+    border-right: none;
+    border-top: 1px solid var(--light);
+  }
+
+  .logo {
+    display: none;
+  }
+
+  nav {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .nav-item {
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .nav-item svg {
+    margin-right: 0;
+    margin-bottom: 4px;
+  }
+
+  .main-content {
+    padding: 16px;
+    margin-top: 0;
+  }
+
+  .playlist {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+  }
+
+  .player {
+    padding: 12px;
+  }
+
+  .player-info img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .player-info h4 {
+    font-size: 14px;
+  }
+
+  .player-info p {
+    font-size: 12px;
+  }
+
+  .player-controls {
+    gap: 12px;
+  }
+
+  .lyrics-container {
+    width: 90%;
+    left: 5%;
+    right: 5%;
+    transform: none;
+    top: 50%;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .playlist {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .player {
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 8px;
+  }
+
+  .player-info {
+    width: 100%;
+  }
+
+  .player-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .progress-bar {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <div class="logo">STAYFY</div>
+      <nav>
+        <a href="https://websim.ai/home" class="nav-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3L4 9v12h16V9l-8-6z"/>
+          </svg>
+          Inicio
+        </a>
+        <a href="https://websim.ai/search" class="nav-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+          Buscar
+        </a>
+        <a href="https://websim.ai/library" class="nav-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 5h-3v5.5c0 1.38-1.12 2.5-2.5 2.5S10 13.88 10 12.5s1.12-2.5 2.5-2.5c.57 0 1.08.19 1.5.51V5h4v2zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6z"/>
+          </svg>
+          Tu Biblioteca
+        </a>
+      </nav>
+    </div>
+    
+    <div class="main-content">
+      <h1>Bienvenido a STAYFY</h1>
+      <div class="playlist">
+        <div class="song-card" data-album="5star">
+          <div class="album-art" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxCorlL3CP3krolmTAaAc1Z0Vr5D6k9m7K3w&s')"></div>
+          <div class="song-info">
+            <h3>5-STAR</h3>
+            <p>Stray Kids • 2023</p>
+          </div>
+        </div>
+        
+        <div class="song-card" data-album="maxident">
+          <div class="album-art" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpdc3cev2UfQRmuf9aBHlGN-jkEb58AH4ckg&s')"></div>
+          <div class="song-info">
+            <h3>MAXIDENT</h3>
+            <p>Stray Kids • 2022</p>
+          </div>
+        </div>
+
+        <div class="song-card" data-album="oddinary">
+          <div class="album-art" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP4YVa7nJ2MZPGTI6WlZRA209FzDb4Bs6DwQ&s')"></div>
+          <div class="song-info">
+            <h3>ODDINARY</h3>
+            <p>Stray Kids • 2022</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="lyrics-container">
+        <h3>Lyrics</h3>
+        <div class="lyrics-message">
+          <p>Song lyrics cannot be displayed due to licensing restrictions.</p>
+          <p>Please check official sources for song lyrics.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="player">
+    <div class="player-info">
+      <img id="current-album-art" src="" alt="Album cover" style="display: none;">
+      <div>
+        <h4 id="current-song">Selecciona un álbum</h4>
+        <p id="current-album">Stray Kids</p>
+      </div>
+    </div>
+    
+    <div class="player-controls">
+      <button class="control-btn" id="prev-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+        </svg>
+      </button>
+      <button class="control-btn" id="play-btn">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      </button>
+      <button class="control-btn" id="next-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+  </div>
+
+  <script>
+    const albums = {
+      '5star': {
+        title: '5-STAR',
+        cover: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxCorlL3CP3krolmTAaAc1Z0Vr5D6k9m7K3w&s',
+        spotifyUrl: 'https://open.spotify.com/album/3Pel3gWsPxVpZVrciU0Fm6',
+        songs: [
+          {
+            title: 'S-Class',
+            audioUrl: 'https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav'
+          },
+          {
+            title: 'TOPLINE (feat. Tiger JK)',
+            audioUrl: 'https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand60.wav'
+          },
+          {
+            title: 'Item',
+            audioUrl: 'https://www2.cs.uic.edu/~i101/SoundFiles/StarWars60.wav'
+          },
+          {
+            title: 'Super Bowl',
+            audioUrl: 'https://www2.cs.uic.edu/~i101/SoundFiles/ImperialMarch60.wav'
+          },
+          {
+            title: 'FNF',
+            audioUrl: 'https://www2.cs.uic.edu/~i101/SoundFiles/PinkPanther60.wav'
+          },
+          {
+            title: 'YOUTIFUL',
+            audioUrl: 'https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav'
+          },
+          {
+            title: 'DLC',
+            audioUrl: 'https://www2.cs.uic.edu/~i101/SoundFiles/StarWars60.wav'
+          },
+          {
+            title: 'GET LIT',
+            audioUrl: 'https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand60.wav'
+          }
+        ]
+      },
+      'maxident': {
+        title: 'MAXIDENT',
+        cover: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpdc3cev2UfQRmuf9aBHlGN-jkEb58AH4ckg&s',
+        spotifyUrl: 'https://open.spotify.com/album/2K8hKcM1Rj1T5VgK0D7xVd',
+        songs: [
+          {
+            title: 'Sample Song 4',
+            audioUrl: 'https://www2.cs.uic.edu/~i101/SoundFiles/ImperialMarch60.wav'
+          },
+          {
+            title: 'Sample Song 5',
+            audioUrl: 'https://www2.cs.uic.edu/~i101/SoundFiles/PinkPanther60.wav'
+          },
+          {
+            title: 'Sample Song 6',
+            audioUrl: 'https://www2.cs.uic.edu/~i101/SoundFiles/BabyElephantWalk60.wav'
+          }
+        ]
+      },
+      'oddinary': {
+        title: 'ODDINARY',
+        cover: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP4YVa7nJ2MZPGTI6WlZRA209FzDb4Bs6DwQ&s',
+        spotifyUrl: 'https://open.spotify.com/album/7t9q8i4m7Ll0we4uU5OFeL',
+        songs: [
+          {
+            title: 'Sample Song 7',
+            audioUrl: 'https://www2.cs.uic.edu/~i101/SoundFiles/StarWars60.wav'
+          },
+          {
+            title: 'Sample Song 8',
+            audioUrl: 'https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand60.wav'
+          },
+          {
+            title: 'Sample Song 9',
+            audioUrl: 'https://www2.cs.uic.edu/~i101/SoundFiles/PinkPanther60.wav'
+          }
+        ]
+      }
+    };
+
+    let currentAudio = new Audio();
+    let currentAlbum = null;
+    let currentSongIndex = 0;
+    let isPlaying = false;
+
+    // Event listeners for all song cards
+    document.querySelectorAll('.song-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const albumId = card.dataset.album;
+        playAlbum(albumId);
+      });
+    });
+
+    function playAlbum(albumId) {
+      const album = albums[albumId];
+      if (!album) return;
+
+      // Remove the Spotify confirmation and directly play the album
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      currentAlbum = album;
+      currentSongIndex = 0;
+      
+      // Update UI with high-quality album art
+      const albumArt = document.getElementById('current-album-art');
+      albumArt.src = album.cover;
+      albumArt.alt = `${album.title} album cover`;
+      albumArt.style.display = 'block';
+      document.getElementById('current-album').textContent = album.title;
+      
+      // Start playing first song
+      playSong();
+    }
+
+    function playSong() {
+      if (!currentAlbum) {
+        console.log('No album selected');
+        return;
+      }
+      
+      const song = currentAlbum.songs[currentSongIndex];
+      if (!song) {
+        console.log('No song found at index', currentSongIndex);
+        return;
+      }
+      
+      // Reset previous audio
+      currentAudio.pause();
+      currentAudio = new Audio();
+      
+      // Add error handling
+      currentAudio.onerror = (e) => {
+        console.error('Audio error:', e);
+        document.getElementById('current-song').textContent = 'Error loading song';
+      };
+      
+      // Add loading state
+      document.getElementById('current-song').textContent = `Loading ${song.title}...`;
+      
+      currentAudio.src = song.audioUrl;
+      
+      // Play the song
+      const playPromise = currentAudio.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            isPlaying = true;
+            updatePlayButton();
+            document.getElementById('current-song').textContent = song.title;
+          })
+          .catch(error => {
+            console.error('Playback failed:', error);
+            document.getElementById('current-song').textContent = 'Cannot play song - Format not supported';
+            isPlaying = false;
+            updatePlayButton();
+          });
+      }
+
+      // Update progress bar while playing
+      currentAudio.ontimeupdate = () => {
+        const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+        document.getElementById('progress').style.width = `${progress}%`;
+      };
+      
+      // Auto-play next song when current one ends
+      currentAudio.onended = () => {
+        nextSong();
+      };
+    }
+
+    function updatePlayButton() {
+      const playBtn = document.getElementById('play-btn');
+      playBtn.innerHTML = isPlaying ? 
+        '<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>' : 
+        '<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+    }
+
+    document.getElementById('play-btn').addEventListener('click', () => {
+      if (!currentAlbum) return;
+      
+      if (isPlaying) {
+        currentAudio.pause();
+        isPlaying = false;
+      } else {
+        currentAudio.play();
+        isPlaying = true;
+      }
+      updatePlayButton();
+    });
+
+    function nextSong() {
+      if (!currentAlbum) return;
+      currentSongIndex = (currentSongIndex + 1) % currentAlbum.songs.length;
+      playSong();
+    }
+
+    function previousSong() {
+      if (!currentAlbum) return;
+      currentSongIndex = (currentSongIndex - 1 + currentAlbum.songs.length) % currentAlbum.songs.length;
+      playSong();
+    }
+
+    document.getElementById('next-btn').addEventListener('click', nextSong);
+    document.getElementById('prev-btn').addEventListener('click', previousSong);
+
+    // Progress bar click handling
+    document.querySelector('.progress-bar').addEventListener('click', (e) => {
+      if (!currentAudio.duration) return;
+      
+      const progressBar = e.currentTarget;
+      const clickPosition = (e.pageX - progressBar.offsetLeft) / progressBar.offsetWidth;
+      currentAudio.currentTime = clickPosition * currentAudio.duration;
+    });
+  </script>
+</body>
+</html>
